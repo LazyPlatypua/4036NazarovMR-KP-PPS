@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Buttiful intheface</title>
+	<link rel="stylesheet" type="text/css" href="styles.css" />
+    <script type="text/javascript" src="javascript/validate-form.js"></script>
+	<script type="text/javascript" src="javascript/lock.js"></script>
+	<script type="text/javascript" src="javascript/sounds.js"></script>
+	<script type="text/javascript" src="javascript/savedata.js"></script>
+	<script type="text/javascript" src="javascript/email.js"></script>
+	<script type="text/javascript" src="javascript/keyboard-username.js"></script>
+	<script type="text/javascript" src="javascript/phone.js"></script>
+	<script type="text/javascript" src="javascript/lock.js"></script>
+    <script type="text/javascript" src="javascript/lizard.js"></script> 
+    <script type="text/javascript" src="javascript/password.js"></script>
+	<script type="text/javascript" src="javascript/game.js"></script>
+     <script type="text/javascript" src="javascript/timer.js"></script>
+	 <script type="text/javascript" src="javascript/popup.js"></script> 
+	<SCRIPT>
+window.onload = function() {
+    var captcha = generateCaptcha();
+    sessionStorage.setItem('captcha', captcha);
+    alert("Капча, в память,\nЗнаки, нелепые и тайны,\nВечно сохраняй: " + captcha);
+};</SCRIPT>
+</head>
+
+
+<body>
+    <div id="shadowBox">
+	<h1 class="rainbow rainbow_text_animated">Регистрация</h1>
+	<form id="registration-form" onsubmit="return validateForm()" class="rainbow rainbow_text_animated">
+		<div style="display: flex;">
+			<label for="username">
+				<p>Привет, дружище!</p>
+				<p>Твое имя - загадка,</p>
+				<p>Слоги в танце вьют:</p>
+			</label>
+			<div>
+				<div id="username-container">
+					<input type="text" id="username-input" name="username" placeholder="(от 3 до 20 символов)" minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+" required readonly />
+					<br> </div>
+				<div id="keyboard-container"> </div> 
+                <span id="username-error" class="error"></span>
+				<br> </div>
+		</div>
+		<br>
+		<div style="display: flex;">
+			<label for="email">
+				<p>Почта таинственна,</p>
+				<p>Буквы в адресе плывут,</p>
+				<p>Мир в письме льется:</p>
+			</label>
+			<input type="text" id="email" name="email" onkeydown="randomizeEmailInput()" required /> <span id="email-error" class="error"></span> </div>
+		<br>
+		<div style="display: flex;">
+			<label for="phone">
+				<p>Цифры танцуют,</p>
+				<p>Номер телефона – звук,</p>
+				<p>Связь с миром вместе:</p>
+			</label>
+			<input type="tel" id="phone" name="phone" pattern="8[0-9]{3}[0-9]{3}[0-9]{2}[0-9]{2}" placeholder="(формат: 81234567890)" required readonly/>
+			<br>
+			<button type="button" onclick="increasePhoneNumber()">+</button> <span id="phone-error" class="error"></span> </div>
+		<br>
+		<div style="display: flex;">
+			<label for="password">
+				<p>Тайны в строке,</p>
+				<p>Пароль защищает мир,</p>
+				<p>Ключ к безопасности:</p>
+			</label>
+            <input type="text" id="password" readonly required />
+            <button onclick="generatePassword()" type="button" >Сгенерировать</button>
+		</div>
+		<br>
+		<div style="display: flex;">
+			<label for="confirm_password">
+				<p>Повторить снова,</p>
+				<p>Точно и безошибочно,</p>
+				<p>Дверь открыть в мир:</p>
+			</label>
+  
+			<input type="text" id="confirm_password" name="confirm_password" minlength="8" required onpaste="preventPaste(event)" placeholder="(минимум 8 символов)" />
+			<br> <span id="confirm-password-error" class="error" ></span> </div>
+		<br>
+
+
+		<div id="game" style="display: flex;">
+			<p>Компьютер загадал число от 1 до 10. Угадайте его!</p>
+			<input type="number" id="guess-input" min="1" max="10">
+			<button onclick="checkGuess()" type="button">Проверить</button>
+			<div id="result"></div>
+		  </div>
+
+
+		<div style="display: flex;">
+			<label for="user_class">
+				<p>В мире фантазий,</p>
+				<p>Расы разные зовут,</p>
+				<p>Избери свою:</p>
+			</label>
+			<select id="user_class" name="user_class" required disabled>
+				<option value="">Выберите расу</option>
+				<option value="человек">Человек</option>
+				<option value="эльф">Эльф</option>
+				<option value="дварф">Дварф</option>
+				<option value="орк">Орк</option>
+				<option value="гном">Гном</option>
+				<option value="драконорожденный">Драконорожденный</option>
+				<option value="темный эльф">Темный эльф</option>
+				<option value="полурослик">Полурослик</option>
+				<option value="полуэльф">Полуэльф</option>
+			</select>
+			<br> <span id="user-class-error" class="error"></span> 
+		</div>
+		<br>
+
+		<div style="display: flex;">
+			<label for="captchaInput">
+				<p>Капча нелепая,</p>
+				<p>Тайны в символах скрыты,</p>
+				<p>Введи и пройди.</p>
+			</label>
+        	<input type="text" id="captchaInput">
+			<span id="captcha-error" class="error"></span>
+		</div>
+
+		<input type="submit" id="submitButton" value="Отправить" disabled> 
+		<!-- Неумелость моя,
+        Кнопку ту я дотронулся,
+        Сожалею я.-->
+		<button id="lock_button" onclick="lock()" type="button">Отправить</button>
+	</form>
+    </div>
+    <div id="timer"></div>		<div id="lock"></div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+          <h2>Технически работы</h2>
+          <p>Мир замкнут на замок</p>
+		  <p>Позже возвращайся</p>
+        </div>
+    </div>
+</body>
+</html>
